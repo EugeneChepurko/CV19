@@ -4,18 +4,29 @@
         mc:Ignorable="d"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:CV19"
-        xmlns:vm="clr-namespace:CV19.Views"
+        xmlns:vm="clr-namespace:CV19.ViewModels"
+        xmlns:cmd="clr-namespace:CV19.Infrastructure.Commands"
         Title="CV19" Height="450" Width="800">
 
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
 
+    <Window.Resources>
+        <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"/>
+    </Window.Resources>
+
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Exit" Command="{Binding CloseApplicationCommand}"/>
+                <MenuItem Header="Exit" Command="{StaticResource CloseApplicationCommand}"/>
+                <!--<MenuItem Header="Exit">
+                    <MenuItem.Command>
+                        <cmd:CloseApplicationCommand/>
+                    </MenuItem.Command>
+                </MenuItem>-->
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="About software"/>
@@ -30,7 +41,13 @@
             </StatusBarItem>
         </StatusBar>
         <TabControl>
-            <TabItem Header="Tab_1">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Icon="FileText" Height="13" Margin="0,0,3,0" Foreground="DarkCyan"/>
+                        <TextBlock Text="tab1"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="21*"/>
@@ -41,10 +58,14 @@
                         <ColumnDefinition Width="372*"/>
                     </Grid.ColumnDefinitions>
                     <Rectangle Grid.Row="0" Grid.Column="0" Fill="red" Stroke="DarkCyan" StrokeThickness="3" RadiusX="5" RadiusY="5"/>
-                    <Ellipse Grid.Column="1" Grid.Row="0" Fill="BlueViolet" Stroke="Aquamarine" StrokeThickness="3"></Ellipse>
+                    <Ellipse Grid.Column="1" Grid.Row="0" Fill="BlueViolet" Stroke="Aquamarine" StrokeThickness="3">
+                        <Ellipse.InputBindings>
+                            <MouseBinding Command="{Binding CloseApplicationCommand}" MouseAction="LeftDoubleClick"></MouseBinding>
+                        </Ellipse.InputBindings>
+                    </Ellipse>
                 </Grid>
             </TabItem>
-            <TabItem Header="Tab_2"></TabItem>
+            <TabItem Header="Tab2"></TabItem>
         </TabControl>
     </DockPanel>
 </Window>

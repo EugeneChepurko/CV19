@@ -1,9 +1,9 @@
 ﻿using CV19.Infrastructure.Commands;
-using CV19.Views.Base;
+using CV19.ViewModels.Base;
 using System.Windows;
 using System.Windows.Input;
 
-namespace CV19.Views
+namespace CV19.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
