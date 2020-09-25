@@ -1,14 +1,20 @@
 ﻿using CV19.Views.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CV19.Views
 {
     internal class MainWindowViewModel : ViewModel
     {
-
+        /// <summary>
+        /// App status
+        /// </summary>
+        private string status = "Ready!";
+        /// <summary>
+        /// Application status
+        /// </summary>
+        public string Status
+        {
+            get => status;
+            set { OnPropertyChanged(ref status, value); }
+        }
     }
 }
