@@ -338,3 +338,8 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/Models/ProvinceInfo.cs
+/Models/PlaceInfo.cs
+/Models/DataPoint.cs
+/Models/CountryInfo.cs
+/Models/ConfirmedCount.cs
