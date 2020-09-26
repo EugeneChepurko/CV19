@@ -12,6 +12,19 @@ namespace CV19.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
+        /// <summary>
+        /// Selected number index
+        /// </summary>
+        private int selectedTabIndex;
+        /// <summary>
+        /// Selected number index
+        /// </summary>
+        public int SelectedTabIndex
+        {
+            get => selectedTabIndex;
+            set { OnPropertyChanged(ref selectedTabIndex, value); }
+        }
+
 
         private IEnumerable<DataPoint> testDataPoints;
         public IEnumerable<DataPoint> TestDataPoints
@@ -43,11 +56,22 @@ namespace CV19.ViewModels
         }
         #endregion
 
+        #region ChangeTabIndexCommand
+        public ICommand ChangeTabIndexCommand { get; }
+        private bool CanChangeTabIndexCommandExecute(object p) => selectedTabIndex >= 0;
+        private void OnChangeTabIndexCommandExecuted(object p)
+        {
+            if (p is null) return;
+            SelectedTabIndex += Convert.ToInt32(p);
+        }
+        #endregion
+
         #endregion
 
         public MainWindowViewModel()
         {
             CloseApplicationCommand = new RelayCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
+            ChangeTabIndexCommand = new RelayCommand(OnChangeTabIndexCommandExecuted, CanChangeTabIndexCommandExecute);
 
             var dataPoints = new List<DataPoint>((int)(360 / 0.1));
             for (double x = 0d; x <= 360; x+=0.1)

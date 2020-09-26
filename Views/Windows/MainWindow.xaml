@@ -7,7 +7,8 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:CV19"
         xmlns:vm="clr-namespace:CV19.ViewModels"
-        xmlns:cmd="clr-namespace:CV19.Infrastructure.Commands"
+        xmlns:cmd="clr-namespace:CV19.Infrastructure.Commands" 
+        xmlns:oxy="http://oxyplot.org/wpf"
         Title="CV19" Height="450" Width="800">
 
     <Window.DataContext>
@@ -31,21 +32,41 @@
             <MenuItem Header="Help">
                 <MenuItem Header="About software"/>
             </MenuItem>
+            <MenuItem Command="{Binding ChangeTabIndexCommand}" CommandParameter="-1">
+                <MenuItem.Header>
+                    <fa:ImageAwesome Height="12" Icon="ArrowCircleOutlineLeft"></fa:ImageAwesome>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Command="{Binding ChangeTabIndexCommand}" CommandParameter="+1">
+                <MenuItem.Header>
+                    <fa:ImageAwesome Height="12" Icon="ArrowCircleOutlineRight"></fa:ImageAwesome>
+                </MenuItem.Header>
+            </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem>
+            <StatusBarItem MinWidth="150">
                 <TextBlock Text="{Binding Status}"></TextBlock>
             </StatusBarItem>
             <StatusBarItem>
                 <ProgressBar Width="120" Height="14" Value="30"></ProgressBar>
             </StatusBarItem>
+            <StatusBarItem Content="{Binding SelectedTabIndex}"></StatusBarItem>
         </StatusBar>
-        <TabControl>
+        <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="Diagram">
+                <oxy:Plot>
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Left"/>
+                        <oxy:LinearAxis Position="Bottom"/>
+                    </oxy:Plot.Axes>
+                    <oxy:LineSeries Color="Red" ItemsSource="{Binding TestDataPoints}" DataFieldX="XValue" DataFieldY="YValue"></oxy:LineSeries>
+                </oxy:Plot>
+            </TabItem>
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <fa:ImageAwesome Icon="FileText" Height="13" Margin="0,0,3,0" Foreground="DarkCyan"/>
-                        <TextBlock Text="tab1"></TextBlock>
+                        <TextBlock Text="Tab1"></TextBlock>
                     </StackPanel>
                 </TabItem.Header>
                 <Grid>
@@ -66,6 +87,8 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Tab2"></TabItem>
+            <TabItem Header="Tab3"></TabItem>
+            <TabItem Header="Tab4"></TabItem>
         </TabControl>
     </DockPanel>
 </Window>

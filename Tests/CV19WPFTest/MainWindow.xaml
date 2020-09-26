@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CV19WPFTest"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid> 
-        
-    </Grid>
+        Title="MainWindow" Height="450" Width="800" MouseWheel="Window_MouseWheel_1" >
+    <Canvas>
+        <Canvas.RenderTransform>
+            <ScaleTransform ScaleX="1" ScaleY="1"/>
+        </Canvas.RenderTransform>
+        <Canvas.Background>
+            <DrawingBrush TileMode="Tile" Viewport="-10,-10,40,40" 
+                                     ViewportUnits="Absolute">
+                <DrawingBrush.Drawing>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,50,50"/>
+                        </GeometryDrawing.Geometry>
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="Gray" Thickness="1"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingBrush.Drawing>
+            </DrawingBrush>
+        </Canvas.Background>
+        </Canvas>
 </Window>

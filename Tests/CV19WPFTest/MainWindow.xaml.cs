@@ -24,5 +24,17 @@ namespace CV19WPFTest
         {
             InitializeComponent();
         }
+
+        private void Window_MouseWheel_1(object sender, MouseWheelEventArgs e)
+        {
+//            var zoom = Vasual
+//             .TransformToAncestor(Window.FromVisual(visual))
+//             .Transform(new Point(1, 1));
+
+//            if (zoom.X > 10 || zoom.Y > 10)
+//  // Use finer gridlines
+//else
+//  // Use coarser gridlines
+        }
     }
 }
