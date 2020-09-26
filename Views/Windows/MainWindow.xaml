@@ -53,6 +53,32 @@
             <StatusBarItem Content="{Binding SelectedTabIndex}"></StatusBarItem>
         </StatusBar>
         <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="Students">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="230"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Black" Background="CadetBlue"></Border>
+                    <Border Grid.Column="0" Grid.RowSpan="2" BorderThickness="2" BorderBrush="Black"></Border>
+                    <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" BorderThickness="2" BorderBrush="Black"></Border>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  VerticalAlignment="Center">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Groups ->" FontSize="15" FontWeight="Bold" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding Groups.Count}" FontSize="15" FontWeight="Bold"></TextBlock>
+                    </StackPanel>
+                    <ListBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Groups}" DisplayMemberPath="Name"></ListBox>
+                    
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Students" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold"/>
+                    <DataGrid Grid.Row="1" Grid.Column="1">
+                        
+                    </DataGrid>
+                </Grid>
+            </TabItem>
             <TabItem Header="Diagram">
                 <oxy:Plot>
                     <oxy:Plot.Axes>
@@ -61,30 +87,6 @@
                     </oxy:Plot.Axes>
                     <oxy:LineSeries Color="Red" ItemsSource="{Binding TestDataPoints}" DataFieldX="XValue" DataFieldY="YValue"></oxy:LineSeries>
                 </oxy:Plot>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="FileText" Height="13" Margin="0,0,3,0" Foreground="DarkCyan"/>
-                        <TextBlock Text="Tab1"></TextBlock>
-                    </StackPanel>
-                </TabItem.Header>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="21*"/>
-                        <RowDefinition Height="173*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25*"/>
-                        <ColumnDefinition Width="372*"/>
-                    </Grid.ColumnDefinitions>
-                    <Rectangle Grid.Row="0" Grid.Column="0" Fill="red" Stroke="DarkCyan" StrokeThickness="3" RadiusX="5" RadiusY="5"/>
-                    <Ellipse Grid.Column="1" Grid.Row="0" Fill="BlueViolet" Stroke="Aquamarine" StrokeThickness="3">
-                        <Ellipse.InputBindings>
-                            <MouseBinding Command="{Binding CloseApplicationCommand}" MouseAction="LeftDoubleClick"></MouseBinding>
-                        </Ellipse.InputBindings>
-                    </Ellipse>
-                </Grid>
             </TabItem>
             <TabItem Header="Tab2"></TabItem>
             <TabItem Header="Tab3"></TabItem>

@@ -1,9 +1,13 @@
 ﻿using CV19.Infrastructure.Commands;
 using CV19.Models;
+using CV19.Models.Decanat;
 using CV19.ViewModels.Base;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Windows;
 using System.Windows.Input;
@@ -12,6 +16,11 @@ namespace CV19.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
+        #region Decanat :D
+
+        public ObservableCollection<Group> Groups { get; }   
+
+        #endregion
         /// <summary>
         /// Selected number index
         /// </summary>
@@ -83,6 +92,24 @@ namespace CV19.ViewModels
             }
 
             TestDataPoints = dataPoints;
+
+            var studentIndex = 1;
+
+            var student = Enumerable.Range(1, 10).Select(s => new Student
+            {
+                Name = $"Student {studentIndex}",
+                Surname = $"Surname {studentIndex}",
+                Patronymic = $"Patronymic {studentIndex++}",
+                Birthday = DateTime.Now,
+                Rating = 0
+            });
+
+            var groups = Enumerable.Range(1, 20).Select(g => new Group 
+            { 
+                Name = $"Group {g}",
+                Students = new ObservableCollection<Student>(student)
+            });
+            Groups = new ObservableCollection<Group>(groups);
         }
     }
 }
