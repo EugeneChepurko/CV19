@@ -18,7 +18,14 @@ namespace CV19.ViewModels
     {
         #region Decanat :D
 
-        public ObservableCollection<Group> Groups { get; }   
+        public ObservableCollection<Group> Groups { get; }
+
+        private Group selectedGroup;
+        public Group SelectedGroup
+        {
+            get => selectedGroup;
+            set { OnPropertyChanged(ref selectedGroup, value); }
+        }
 
         #endregion
         /// <summary>
