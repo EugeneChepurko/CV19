@@ -126,16 +126,30 @@
                         <!--<TextBlock Grid.Row="0" Grid.Column="0" Text="Groups" FontSize="15" FontWeight="Bold" Margin="0,0,5,0"/>-->
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Groups.Count,StringFormat='Groups [{0}]'}" FontSize="15" FontWeight="Bold"/>
                     </StackPanel>
-                    <ListBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroup}">
-                        <ListBox.Resources>
-                            <DataTemplate DataType="{x:Type decanat:Group}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}"/>
-                                    <TextBlock Text="{Binding Students.Count, StringFormat='[Students={0}]'}" Margin="15,0,0,0"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.Resources>
-                    </ListBox>
+
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="25"/>
+                        </Grid.RowDefinitions>
+                        <ListBox Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroup}">
+                            <ListBox.Resources>
+                                <DataTemplate DataType="{x:Type decanat:Group}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Students.Count, StringFormat='[Students={0}]'}" Margin="15,0,0,0"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.Resources>
+                        </ListBox>
+                        <UniformGrid Grid.Column="0" Grid.Row="1" Rows="1" Background="LightGray">
+                            <Button  Content="Create" Margin="1,1,1,1" Command="{Binding CreateGroupCommand}"></Button>
+                            <Button  Content="Delete" Margin="1,1,1,1" Command="{Binding DeleteGroupCommand}" CommandParameter="{Binding SelectedGroup}"></Button>
+                        </UniformGrid>
+                        
+                    </Grid>
+
+                    
 
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="Students" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold"/>
 

@@ -72,7 +72,7 @@ namespace CV19.ViewModels
 
         #region Commands
 
-        #region CloseApplicationCommand
+        #region Close Application Command
         public ICommand CloseApplicationCommand { get; }
         private bool CanCloseApplicationCommandExecute(object p) => true;
         private void OnCloseApplicationCommandExecuted(object p)
@@ -81,7 +81,7 @@ namespace CV19.ViewModels
         }
         #endregion
 
-        #region ChangeTabIndexCommand
+        #region Change Tab Index Command
         public ICommand ChangeTabIndexCommand { get; }
         private bool CanChangeTabIndexCommandExecute(object p) => selectedTabIndex >= 0;
         private void OnChangeTabIndexCommandExecuted(object p)
@@ -91,12 +91,47 @@ namespace CV19.ViewModels
         }
         #endregion
 
+        #region Create Group
+
+        public ICommand CreateGroupCommand { get; }
+        private bool CanCreateGroupCommandExecute(object p) => true;
+        private void OnCreateGroupCommandExecuted(object p)
+        {
+            var groupMaxIndex = Groups.Count + 1;
+            var newGroup = new Group()
+            {
+                Name = $"Group {groupMaxIndex}",
+                Students = new ObservableCollection<Student>()
+            };
+            Groups.Add(newGroup);
+        }
+
+        #endregion
+
+        #region Delete Group
+        public ICommand DeleteGroupCommand { get; }
+        private bool CanDeleteGroupCommandExecute(object p) => p is Group group && Groups.Contains(group);
+        private void OnDeleteGroupCommandExecuted(object p)
+        {
+            if (!(p is Group group)) return;
+
+            int indexGroup = Groups.IndexOf(group);
+            Groups.Remove(group);
+            
+            if (indexGroup < Groups.Count)
+                SelectedGroup = Groups[indexGroup];
+        }
+
+        #endregion
+
         #endregion
 
         public MainWindowViewModel()
         {
             CloseApplicationCommand = new RelayCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
             ChangeTabIndexCommand = new RelayCommand(OnChangeTabIndexCommandExecuted, CanChangeTabIndexCommandExecute);
+            CreateGroupCommand = new RelayCommand(OnCreateGroupCommandExecuted, CanCreateGroupCommandExecute);
+            DeleteGroupCommand = new RelayCommand(OnDeleteGroupCommandExecuted, CanDeleteGroupCommandExecute);
 
             var dataPoints = new List<DataPoint>((int)(360 / 0.1));
             for (double x = 0d; x <= 360; x+=0.1)
