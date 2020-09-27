@@ -18,6 +18,15 @@ namespace CV19.ViewModels
     {
         #region Decanat :D
 
+        public object[] CompositeCollection { get; }
+
+        private object selectedConpositeValue;
+        public object SelectedConpositeValue
+        {
+            get => selectedConpositeValue;
+            set { OnPropertyChanged(ref selectedConpositeValue, value); }
+        }
+
         public ObservableCollection<Group> Groups { get; }
 
         private Group selectedGroup;
@@ -117,6 +126,16 @@ namespace CV19.ViewModels
                 Students = new ObservableCollection<Student>(student)
             });
             Groups = new ObservableCollection<Group>(groups);
+
+            var data_list = new List<object>();
+
+            data_list.Add("hello!");
+            data_list.Add(34);
+            var group = Groups[1];
+            data_list.Add(group);
+            data_list.Add(group.Students[0]);
+
+            CompositeCollection = data_list.ToArray();
         }
     }
 }

@@ -10,6 +10,7 @@
         xmlns:vm="clr-namespace:CV19.ViewModels"
         xmlns:cmd="clr-namespace:CV19.Infrastructure.Commands" 
         xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         Title="CV19" Height="450" Width="800">
 
     <Window.DataContext>
@@ -54,6 +55,57 @@
             <StatusBarItem Content="{Binding SelectedTabIndex}"></StatusBarItem>
         </StatusBar>
         <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="Other data">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ListBox ItemsSource="{Binding CompositeCollection}" SelectedItem="{Binding SelectedConpositeValue}">
+                        <ListBox.Resources>
+                            <DataTemplate DataType="{x:Type decanat:Group}">
+                                <TextBlock Text="{Binding Name, StringFormat='Group is {0}'}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type decanat:Student}">
+                                <TextBlock Text="{Binding Name, StringFormat='Name is {0}'}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type sys:String}">
+                                <TextBlock>
+                                    <Run Text="my str:" Foreground="Red" FontWeight="Bold"/> <TextBlock Text="{Binding}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type sys:Int32}">
+                                <TextBlock>
+                                    my int32: <TextBlock Text="{Binding}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.Resources>
+                    </ListBox>
+                    <GroupBox Header="Selected object" Grid.Column="1">
+                        <ContentControl Content="{Binding SelectedConpositeValue}">
+                            <ContentControl.Resources>
+                                <DataTemplate DataType="{x:Type decanat:Group}">
+                                    <TextBlock Text="{Binding Name, StringFormat='Group is {0}'}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30"/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type decanat:Student}">
+                                    <TextBlock Text="{Binding Name, StringFormat='Name is {0}'}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30"/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type sys:String}">
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30">
+                                        <Run Text="my str:" Foreground="Red" FontWeight="Bold"/> <TextBlock Text="{Binding}"/>
+                                     </TextBlock>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type sys:Int32}">
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30">
+                                        my int32: <TextBlock Text="{Binding}"/>
+                                     </TextBlock>
+                                </DataTemplate>
+                            </ContentControl.Resources>
+                        </ContentControl>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
             <TabItem Header="Students">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -65,19 +117,28 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    
+
                     <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Black" Background="CadetBlue"></Border>
                     <Border Grid.Column="0" Grid.RowSpan="2" BorderThickness="2" BorderBrush="Black"></Border>
                     <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" BorderThickness="2" BorderBrush="Black"></Border>
-                    
+
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  VerticalAlignment="Center">
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Groups ->" FontSize="15" FontWeight="Bold" Margin="0,0,5,0"/>
-                        <TextBlock Text="{Binding Groups.Count}" FontSize="15" FontWeight="Bold"></TextBlock>
+                        <!--<TextBlock Grid.Row="0" Grid.Column="0" Text="Groups" FontSize="15" FontWeight="Bold" Margin="0,0,5,0"/>-->
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Groups.Count,StringFormat='Groups [{0}]'}" FontSize="15" FontWeight="Bold"/>
                     </StackPanel>
-                    <ListBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroup}" DisplayMemberPath="Name"></ListBox>
-                    
+                    <ListBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroup}">
+                        <ListBox.Resources>
+                            <DataTemplate DataType="{x:Type decanat:Group}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}"/>
+                                    <TextBlock Text="{Binding Students.Count, StringFormat='[Students={0}]'}" Margin="15,0,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.Resources>
+                    </ListBox>
+
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="Students" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold"/>
-                    
+
                     <!--Students-->
                     <Grid Grid.Row="1" Grid.Column="1">
                         <Grid.RowDefinitions>
