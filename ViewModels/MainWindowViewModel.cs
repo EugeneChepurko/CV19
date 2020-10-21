@@ -118,8 +118,8 @@ namespace CV19.ViewModels
             int indexGroup = Groups.IndexOf(group);
             Groups.Remove(group);
             
-            if (indexGroup < Groups.Count)
-                SelectedGroup = Groups[indexGroup];
+            if (indexGroup <= Groups.Count && Groups.Count != 0)
+                SelectedGroup = Groups[Groups.Count - 1];
         }
 
         #endregion
