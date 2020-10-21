@@ -6,9 +6,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:CV19"
+        xmlns:decanat="clr-namespace:CV19.Models.Decanat"
         xmlns:vm="clr-namespace:CV19.ViewModels"
         xmlns:cmd="clr-namespace:CV19.Infrastructure.Commands" 
         xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         Title="CV19" Height="450" Width="800">
 
     <Window.DataContext>
@@ -16,7 +18,14 @@
     </Window.DataContext>
 
     <Window.Resources>
-        <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"/>
+        <ResourceDictionary>
+         <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"/>
+
+        
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles/Buttons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
 
     <DockPanel>
@@ -53,6 +62,150 @@
             <StatusBarItem Content="{Binding SelectedTabIndex}"></StatusBarItem>
         </StatusBar>
         <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="Other data">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ListBox ItemsSource="{Binding CompositeCollection}" SelectedItem="{Binding SelectedConpositeValue}">
+                        <ListBox.Resources>
+                            <DataTemplate DataType="{x:Type decanat:Group}">
+                                <TextBlock Text="{Binding Name, StringFormat='Group is {0}'}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type decanat:Student}">
+                                <TextBlock Text="{Binding Name, StringFormat='Name is {0}'}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type sys:String}">
+                                <TextBlock>
+                                    <Run Text="my str:" Foreground="Red" FontWeight="Bold"/> <TextBlock Text="{Binding}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type sys:Int32}">
+                                <TextBlock>
+                                    my int32: <TextBlock Text="{Binding}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.Resources>
+                    </ListBox>
+                    <GroupBox Header="Selected object" Grid.Column="1">
+                        <ContentControl Content="{Binding SelectedConpositeValue}">
+                            <ContentControl.Resources>
+                                <DataTemplate DataType="{x:Type decanat:Group}">
+                                    <TextBlock Text="{Binding Name, StringFormat='Group is {0}'}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30"/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type decanat:Student}">
+                                    <TextBlock Text="{Binding Name, StringFormat='Name is {0}'}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30"/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type sys:String}">
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30">
+                                        <Run Text="my str:" Foreground="Red" FontWeight="Bold"/> <TextBlock Text="{Binding}"/>
+                                     </TextBlock>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type sys:Int32}">
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30">
+                                        my int32: <TextBlock Text="{Binding}"/>
+                                     </TextBlock>
+                                </DataTemplate>
+                            </ContentControl.Resources>
+                        </ContentControl>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Students">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="230"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+
+                    <Border Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Black" Background="CadetBlue"></Border>
+                    <Border Grid.Column="0" Grid.RowSpan="2" BorderThickness="2" BorderBrush="Black"></Border>
+                    <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" BorderThickness="2" BorderBrush="Black"></Border>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  VerticalAlignment="Center">
+                        <!--<TextBlock Grid.Row="0" Grid.Column="0" Text="Groups" FontSize="15" FontWeight="Bold" Margin="0,0,5,0"/>-->
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Groups.Count,StringFormat='Groups [{0}]'}" FontSize="15" FontWeight="Bold"/>
+                    </StackPanel>
+
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <ListBox Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroup}">
+                            <ListBox.Resources>
+                                <DataTemplate DataType="{x:Type decanat:Group}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" Name="tbName"/>
+                                        <TextBlock Text="{Binding Students.Count, StringFormat='[Students={0}]'}" Margin="15,0,0,0"/>
+                                    </StackPanel>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Students.Count}" Value="0">
+                                            <Setter TargetName="tbName" Property="Foreground" Value="Red"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ListBox.Resources>
+                        </ListBox>
+                        <UniformGrid Grid.Column="0" Grid.Row="1" Rows="1" >
+                            <Button Style="{StaticResource ButtonCreateStyle}" Command="{Binding CreateGroupCommand}"></Button>
+                            <Button Style="{StaticResource ButtonDeleteStyle}" Command="{Binding DeleteGroupCommand}" CommandParameter="{Binding SelectedGroup}"></Button>
+                        </UniformGrid>
+                        
+                    </Grid>
+                                  
+                    <!--Students-->
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Students" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold"/>
+
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0">
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="Selected group:" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13" FontWeight="Bold" Margin="3,0,5,0"></TextBlock>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedGroup.Name, FallbackValue='Group is not selected', TargetNullValue='Group is not selected'}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13" FontWeight="Bold" Margin="3,0,5,0"></TextBlock>
+                        </StackPanel>
+
+                        <DataGrid Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SelectedGroup.Students}" AutoGenerateColumns="False"
+                                  GridLinesVisibility="Vertical" VerticalGridLinesBrush="DarkGray" AlternatingRowBackground="LightGray" CanUserAddRows="True">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="False"/>
+                                <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" IsReadOnly="False"/>
+                                <DataGridTextColumn Header="Patronymic" Binding="{Binding Patronymic}" IsReadOnly="False"/>
+                                <!--<DataGridTextColumn Header="Birthday" Binding="{Binding Birthday, StringFormat=dd.mm.yyyy}"/>-->
+                                <DataGridTemplateColumn Header="Birthday">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate DataType="{x:Type decanat:Student}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <fa:ImageAwesome Height="10" Icon="BirthdayCake" Margin="0,0,2,0"/>
+                                                <TextBlock Text="{Binding Birthday}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate DataType="{x:Type decanat:Student}">
+                                            <DatePicker SelectedDate="{Binding Birthday, StringFormat=dd.mm.yyyy}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Rating" Binding="{Binding Rating}"/>
+                                <DataGridTextColumn Header="Notes" Binding="{Binding Description}" Width="*"/>
+                                <!--<DataGridTextColumn Header="Group" Binding="{Binding DataContext.SelectedGroup.Name, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>-->
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+
+                </Grid>
+            </TabItem>
             <TabItem Header="Diagram">
                 <oxy:Plot>
                     <oxy:Plot.Axes>
@@ -62,31 +215,46 @@
                     <oxy:LineSeries Color="Red" ItemsSource="{Binding TestDataPoints}" DataFieldX="XValue" DataFieldY="YValue"></oxy:LineSeries>
                 </oxy:Plot>
             </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="FileText" Height="13" Margin="0,0,3,0" Foreground="DarkCyan"/>
-                        <TextBlock Text="Tab1"></TextBlock>
-                    </StackPanel>
-                </TabItem.Header>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="21*"/>
-                        <RowDefinition Height="173*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25*"/>
-                        <ColumnDefinition Width="372*"/>
-                    </Grid.ColumnDefinitions>
-                    <Rectangle Grid.Row="0" Grid.Column="0" Fill="red" Stroke="DarkCyan" StrokeThickness="3" RadiusX="5" RadiusY="5"/>
-                    <Ellipse Grid.Column="1" Grid.Row="0" Fill="BlueViolet" Stroke="Aquamarine" StrokeThickness="3">
-                        <Ellipse.InputBindings>
-                            <MouseBinding Command="{Binding CloseApplicationCommand}" MouseAction="LeftDoubleClick"></MouseBinding>
-                        </Ellipse.InputBindings>
-                    </Ellipse>
-                </Grid>
+            <TabItem Header="Tab2">
+                <Button Width="150" Height="25" FontWeight="Bold" RenderTransformOrigin="0.5,0.5" Style="{StaticResource ButtonDeleteStyle}">
+                    <Button.Background>
+                        <SolidColorBrush Color="Salmon" x:Name="colorBrush"/>
+                    </Button.Background>
+                    <Button.RenderTransform>
+                        <RotateTransform x:Name="buttonRotate"/>
+                    </Button.RenderTransform>
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="buttonRotate" Storyboard.TargetProperty="Angle"
+                                                     From="0" To="360" Duration="0:0:1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <EventTrigger RoutedEvent="Button.MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="colorBrush" Storyboard.TargetProperty="Color" 
+                                                    Duration="0:0:0.1"
+                                                    To="#FFDC5A5A" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        
+                        <EventTrigger RoutedEvent="Button.MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="colorBrush" Storyboard.TargetProperty="Color" 
+                                                    Duration="0:0:1"
+                                                    To="#FFF3AA6D"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
             </TabItem>
-            <TabItem Header="Tab2"></TabItem>
             <TabItem Header="Tab3"></TabItem>
             <TabItem Header="Tab4"></TabItem>
         </TabControl>

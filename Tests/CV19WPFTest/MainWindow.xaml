@@ -5,11 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CV19WPFTest"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" MouseWheel="Window_MouseWheel_1" >
-    <Canvas>
+        Title="MainWindow" Height="450" Width="800">
+    
+    
+    <Canvas MouseWheel="Window_MouseWheel_1">
         <Canvas.RenderTransform>
-            <ScaleTransform ScaleX="1" ScaleY="1"/>
+            <ScaleTransform ScaleX="{Binding ScaleX}" ScaleY="{Binding ScaleY}"/>
         </Canvas.RenderTransform>
+        
         <Canvas.Background>
             <DrawingBrush TileMode="Tile" Viewport="-10,-10,40,40" 
                                      ViewportUnits="Absolute">
@@ -25,5 +28,5 @@
                 </DrawingBrush.Drawing>
             </DrawingBrush>
         </Canvas.Background>
-        </Canvas>
+    </Canvas>
 </Window>
