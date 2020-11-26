@@ -139,22 +139,38 @@
                             <RowDefinition/>
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
-                        <ListBox Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroup}">
-                            <ListBox.Resources>
-                                <DataTemplate DataType="{x:Type decanat:Group}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}" Name="tbName"/>
-                                        <TextBlock Text="{Binding Students.Count, StringFormat='[Students={0}]'}" Margin="15,0,0,0"/>
-                                    </StackPanel>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding Students.Count}" Value="0">
-                                            <Setter TargetName="tbName" Property="Foreground" Value="Red"/>
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
-                                </DataTemplate>
-                            </ListBox.Resources>
-                        </ListBox>
-                        <UniformGrid Grid.Column="0" Grid.Row="1" Rows="1" >
+                        
+                        <DockPanel Grid.Row="0">
+                            <DockPanel.Resources>
+                                <CollectionViewSource x:Key="CollectionGroup" x:Name="CollectionGroup" Source="{Binding Groups}" Filter="GroupsFilter"/>
+                            </DockPanel.Resources>
+                            <DockPanel DockPanel.Dock="Top" Margin="2">
+                                <fa:ImageAwesome Height="12" Icon="Search" Margin="3"/>
+                                <TextBox Name="tbGroups" TextChanged="OnFilterChanged"/>
+                            </DockPanel>
+                            <ListBox Grid.Column="0" ItemsSource="{Binding Source={StaticResource CollectionGroup}}" SelectedItem="{Binding SelectedGroup}"
+                                     VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.IsContainerVirtualizable="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.Resources>
+                                    <DataTemplate DataType="{x:Type decanat:Group}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" Name="tbName"/>
+                                            <TextBlock Text="{Binding Students.Count, StringFormat='[Students={0}]'}" Margin="15,0,0,0"/>
+                                        </StackPanel>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Students.Count}" Value="0">
+                                                <Setter TargetName="tbName" Property="Foreground" Value="Red"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ListBox.Resources>
+                            </ListBox>
+                        </DockPanel>
+                        <UniformGrid Grid.Row="2" Rows="1" >
                             <Button Style="{StaticResource ButtonCreateStyle}" Command="{Binding CreateGroupCommand}"></Button>
                             <Button Style="{StaticResource ButtonDeleteStyle}" Command="{Binding DeleteGroupCommand}" CommandParameter="{Binding SelectedGroup}"></Button>
                         </UniformGrid>
@@ -174,34 +190,40 @@
                             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedGroup.Name, FallbackValue='Group is not selected', TargetNullValue='Group is not selected'}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="13" FontWeight="Bold" Margin="3,0,5,0"></TextBlock>
                         </StackPanel>
 
-                        <DataGrid Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SelectedGroup.Students}" AutoGenerateColumns="False"
+                        <DockPanel Grid.Row="1">
+                            <DockPanel DockPanel.Dock="Top" Margin="2">
+                                <fa:ImageAwesome Height="12" Icon="Search" Margin="3"/>
+                                <TextBox />
+                            </DockPanel>
+                            <DataGrid Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SelectedGroup.Students}" AutoGenerateColumns="False"
                                   GridLinesVisibility="Vertical" VerticalGridLinesBrush="DarkGray" AlternatingRowBackground="LightGray" CanUserAddRows="True">
 
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="False"/>
-                                <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" IsReadOnly="False"/>
-                                <DataGridTextColumn Header="Patronymic" Binding="{Binding Patronymic}" IsReadOnly="False"/>
-                                <!--<DataGridTextColumn Header="Birthday" Binding="{Binding Birthday, StringFormat=dd.mm.yyyy}"/>-->
-                                <DataGridTemplateColumn Header="Birthday">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate DataType="{x:Type decanat:Student}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <fa:ImageAwesome Height="10" Icon="BirthdayCake" Margin="0,0,2,0"/>
-                                                <TextBlock Text="{Binding Birthday}"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                        <DataTemplate DataType="{x:Type decanat:Student}">
-                                            <DatePicker SelectedDate="{Binding Birthday, StringFormat=dd.mm.yyyy}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Rating" Binding="{Binding Rating}"/>
-                                <DataGridTextColumn Header="Notes" Binding="{Binding Description}" Width="*"/>
-                                <!--<DataGridTextColumn Header="Group" Binding="{Binding DataContext.SelectedGroup.Name, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>-->
-                            </DataGrid.Columns>
-                        </DataGrid>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="False"/>
+                                    <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" IsReadOnly="False"/>
+                                    <DataGridTextColumn Header="Patronymic" Binding="{Binding Patronymic}" IsReadOnly="False"/>
+                                    <!--<DataGridTextColumn Header="Birthday" Binding="{Binding Birthday, StringFormat=dd.mm.yyyy}"/>-->
+                                    <DataGridTemplateColumn Header="Birthday">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate DataType="{x:Type decanat:Student}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <fa:ImageAwesome Height="10" Icon="BirthdayCake" Margin="0,0,2,0"/>
+                                                    <TextBlock Text="{Binding Birthday}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate DataType="{x:Type decanat:Student}">
+                                                <DatePicker SelectedDate="{Binding Birthday, StringFormat=dd.mm.yyyy}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Rating" Binding="{Binding Rating}"/>
+                                    <DataGridTextColumn Header="Notes" Binding="{Binding Description}" Width="*"/>
+                                    <!--<DataGridTextColumn Header="Group" Binding="{Binding DataContext.SelectedGroup.Name, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>-->
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
                     </Grid>
 
                 </Grid>
