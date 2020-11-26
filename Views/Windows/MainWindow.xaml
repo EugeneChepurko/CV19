@@ -278,7 +278,13 @@
                 </Button>
             </TabItem>
             <TabItem Header="Virtualization">
-                <ListBox HorizontalAlignment="Left" Width="200" Margin="5" ItemsSource="{Binding TestStudents}">
+                <ListBox HorizontalAlignment="Left" Width="200" Margin="5" ItemsSource="{Binding TestStudents}" 
+                         VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.IsContainerVirtualizable="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
