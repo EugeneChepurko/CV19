@@ -5,28 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CV19WPFTest"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     
     
-    <Canvas MouseWheel="Window_MouseWheel_1">
+    <Canvas MouseWheel="Window_MouseWheel_1" MouseLeftButtonDown="MouseLeftButtonDownDragGrid" SizeChanged="UpdateMatrixSizeChanged"
+            MouseMove="MouseMoveGrid" MouseLeftButtonUp="MouseLeftButtonUpDragGrid"
+            x:Name="backgroundCanvas" AllowDrop="True" Width="2400" Height="1350">
+        
         <Canvas.RenderTransform>
-            <ScaleTransform ScaleX="{Binding ScaleX}" ScaleY="{Binding ScaleY}"/>
+            <TransformGroup>
+                <MatrixTransform Matrix="{Binding Matrix}"/>
+                <!--<ScaleTransform ScaleX="{Binding ScaleX}" ScaleY="{Binding ScaleY}" CenterX="{Binding CenterX}" CenterY="{Binding CenterY}"/>-->
+                <TranslateTransform X="{Binding TranslateX}" Y="{Binding TranslateY}"/>
+                
+            </TransformGroup>
         </Canvas.RenderTransform>
+        <!--<Line SnapsToDevicePixels="True" Stroke="Black" X1="{Binding Path=Width, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Canvas}}}"
+              Y1="55">
+            
+        </Line>
+        <Line X1="2400" Y1="800" X2="2400" Y2="800" Stroke="Black" StrokeThickness="4" SnapsToDevicePixels="True">
+            
+        </Line>-->
         
         <Canvas.Background>
             <DrawingBrush TileMode="Tile" Viewport="-10,-10,40,40" 
                                      ViewportUnits="Absolute">
+
                 <DrawingBrush.Drawing>
                     <GeometryDrawing>
                         <GeometryDrawing.Geometry>
                             <RectangleGeometry Rect="0,0,50,50"/>
+                            
                         </GeometryDrawing.Geometry>
                         <GeometryDrawing.Pen>
                             <Pen Brush="Gray" Thickness="1"/>
                         </GeometryDrawing.Pen>
+                        
                     </GeometryDrawing>
+                    
                 </DrawingBrush.Drawing>
             </DrawingBrush>
         </Canvas.Background>
+        <!--<Rectangle Width="400" Height="200" Canvas.Left="100" Canvas.Top="100" Stroke="Black" Fill="Black" Cursor="Hand" >
+
+        </Rectangle>-->
     </Canvas>
 </Window>
