@@ -70,6 +70,13 @@ namespace CV19.ViewModels
             set { OnPropertyChanged(ref status, value); }
         }
 
+        public IEnumerable<Student> TestStudents => Enumerable.Range(1, App.IsDesignMode ? 10 : 100_000)
+            .Select(s => new Student
+            {
+                Name = $"Name {s}",
+                Surname = $"Surname {s}"
+            });
+
         #region Commands
 
         #region Close Application Command
